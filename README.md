@@ -15,3 +15,4 @@
 - configureStore => Provider => userSlice => export reducers and actions
 - Add redux devTools
 - Navbar should update as user login
+- If token is not available then user should navigate to login page
