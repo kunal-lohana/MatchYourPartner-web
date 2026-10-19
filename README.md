@@ -11,3 +11,7 @@
 - Install axios
 - CORS - install cors in backend -> add in middleware- whitelist frontend IP in origin option with credential: true
 - While calling api with axios -> pass { withCredentials: true }
+- Install react-redux + @reduxjs/toolkit
+- configureStore => Provider => userSlice => export reducers and actions
+- Add redux devTools
+- Navbar should update as user login
