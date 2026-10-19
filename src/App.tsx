@@ -6,7 +6,7 @@ import Login from "./components/Login";
 function App() {
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/">
       <Routes>
         <Route path="/" element={<Body />} >
           <Route path="/login" element={<Login />} ></Route>

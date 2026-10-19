@@ -8,3 +8,6 @@
 - Create BrowserRouter => Routes => Route =/ Body> ChildrenRoute
 - Create an Outlet in your Body component
 - Create a Footer component
+- Install axios
+- CORS - install cors in backend -> add in middleware- whitelist frontend IP in origin option with credential: true
+- While calling api with axios -> pass { withCredentials: true }
