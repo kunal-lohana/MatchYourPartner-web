@@ -7,8 +7,8 @@ import { useNavigate } from "react-router";
 
 const Login = () => {
     const dispatch = useDispatch();
-    const [emailId, setEmailId] = useState("");
-    const [password, setPassword] = useState("");
+    const [emailId, setEmailId] = useState("elon.mask@gmail.com");
+    const [password, setPassword] = useState("Elon12@123");
     const [error, setError] = useState("");
     const navigate = useNavigate();
     const handleLogin = async () => {

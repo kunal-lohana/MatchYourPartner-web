@@ -18,8 +18,8 @@ const Feed = () => {
         } catch (error) {
             setError(error?.response?.data);
         }
-
     }
+
     useEffect(() => {
         getFeed();
     }, []);
