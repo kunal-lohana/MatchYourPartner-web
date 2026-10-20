@@ -1,0 +1,68 @@
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { BASE_URL } from "../utils/constants";
+import axios from "axios";
+import { addRequests } from "../store/requestSlice";
+const Requests = () => {
+    const dispatch = useDispatch();
+    const requests = useSelector(store => store.requests);
+    const [error, setError] = useState("");
+
+    const getRequests = async () => {
+        if (requests?.length) return;
+        try {
+            const res = await axios.get(BASE_URL + "/user/receivers", { withCredentials: true });
+            if (res.status === 200) {
+                console.log('res', res.data.data);
+                dispatch(addRequests(res.data.data));
+            }
+        } catch (error) {
+            setError(error?.response?.data);
+        }
+
+    }
+
+    const handleRequest = async (status: string) => {
+        try {
+            const requestId = requests?._id;
+            if (requestId) {
+                const reqResponse = await axios.post(BASE_URL + `/request/review/${status}/${requestId}`,
+                    {},
+                    { withCredentials: true });
+                if (reqResponse.status === 200) {
+
+                }
+            }
+        } catch (error) {
+
+        }
+    };
+
+    useEffect(() => {
+        getRequests();
+    }, []);
+
+    if (!requests) return;
+    if (requests?.length === 0) return (<h2 className="text-center text-shadow-warning text-2xl py-5">No requests exists!!</h2>)
+
+    return (<div className="flex flex-col items-center gap-5 max-w-md my-5 text-center mx-auto">
+        {requests.map((request) => {
+            const { _id, firstName, lastName, photoUrl, age, gender, about } = request?.fromUserId;
+            return (
+                <div key={_id} className="flex justify-center bg-base-300 gap-10 p-2 shadow-sm items-center">
+                    <img alt="photo" src={photoUrl} className="w-20 h-20 rounded-full"></img>
+                    <div className="flex flex-col gap-2">
+                        <h3 className="text-xl font-bold">{firstName + " " + lastName}</h3>
+                        <p className="flex-nowrap">{about}</p>
+                        {age && gender && <p>{age + " ," + gender}</p>}
+                    </div>
+                    <div className="flex gap-5">
+                        <button className="btn btn-primary" onClick={handleRequest('rejected')}>Reject</button>
+                        <button className="btn btn-secondary" onClick={handleRequest('accepted')}>Accept</button>
+                    </div>
+                </div>
+            )
+        })}
+    </div>)
+}
+export default Requests;

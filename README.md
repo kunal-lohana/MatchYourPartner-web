@@ -21,3 +21,6 @@
 - Get the feed and add in store
 - Create card for user feed
 - Implement Edit profile functionality
+- Add toast message to show notification on saved profile
+- Create page to show all connections
+- Create page to show all requests for connection

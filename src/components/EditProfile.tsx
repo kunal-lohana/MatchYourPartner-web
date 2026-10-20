@@ -13,6 +13,7 @@ const EditProfile = ({ user }) => {
     const [about, setAbout] = useState(user.about);
     const [photoUrl, setPhotoUrl] = useState(user.photoUrl);
     const [error, setError] = useState("");
+    const [toast, setToast] = useState("");
     const dispatch = useDispatch();
     const editProfile = async () => {
         error && setError("");
@@ -27,6 +28,10 @@ const EditProfile = ({ user }) => {
             }, { withCredentials: true });
             if (res.status === 200) {
                 dispatch(addUser(res?.data?.data));
+                setToast(res?.data?.message);
+                setTimeout(() => {
+                    setToast("");
+                }, 3000);
             }
         } catch (error) {
             setError(error.response?.data?.message || 'something went wrong!!');
@@ -63,6 +68,11 @@ const EditProfile = ({ user }) => {
             <div className="my-4">
                 <UserCard user={{ firstName, lastName, age, gender, about, photoUrl }}></UserCard>
             </div>
+            {toast && <div className="toast toast-top toast-center">
+                <div className="alert alert-success">
+                    <span>Message sent successfully.</span>
+                </div>
+            </div>}
         </div>
     )
 
