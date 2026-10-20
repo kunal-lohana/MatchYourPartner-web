@@ -20,3 +20,4 @@
 - Added Logout feature
 - Get the feed and add in store
 - Create card for user feed
+- Implement Edit profile functionality
