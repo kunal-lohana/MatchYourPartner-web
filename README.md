@@ -18,3 +18,5 @@
 - Handle user login on-refresh the page
 - If token is not available then user should navigate to login page
 - Added Logout feature
+- Get the feed and add in store
+- Create card for user feed
