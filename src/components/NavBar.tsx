@@ -1,8 +1,26 @@
-import { useSelector } from "react-redux";
-import { Link } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router";
+import { BASE_URL } from "../utils/constants";
+import axios from "axios";
+import { removeUser } from "../utils/userSlice";
 const NavBar = () => {
-
+    const navigate = useNavigate();
     const user = useSelector(store => store.user);
+    const dispatch = useDispatch();
+    const handleLogout = async () => {
+        try {
+            const res = await axios.post(BASE_URL + "/logout", {}, {
+                withCredentials: true
+            })
+            if(res.status === 200) {
+                dispatch(removeUser());
+                return navigate("/login");
+            }
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
     return (
         <>
             <div className="navbar bg-base-200 shadow-sm px-4">
@@ -11,7 +29,7 @@ const NavBar = () => {
                 </div>
                 <div className="flex gap-2">
                     {user && (
-                    <><div className="navbar-center hidden lg:flex font-bold">Welcome, {user.firstName}</div><div className="dropdown dropdown-end">
+                        <><div className="navbar-center hidden lg:flex font-bold">Welcome, {user.firstName}</div><div className="dropdown dropdown-end">
                             <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
                                 <div className="w-10 rounded-full">
                                     <img
@@ -30,7 +48,7 @@ const NavBar = () => {
                                     </Link>
                                 </li>
                                 <li><a>Settings</a></li>
-                                <li><a>Logout</a></li>
+                                <li><a onClick={handleLogout}>Logout</a></li>
                             </ul>
                         </div></>)}
                 </div>
