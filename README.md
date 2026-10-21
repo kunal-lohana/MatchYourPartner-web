@@ -24,3 +24,5 @@
 - Add toast message to show notification on saved profile
 - Create page to show all connections
 - Create page to show all requests for connection
+- Implement api request of request-accepted/rejected
+- Implement send/request - interested/ignored

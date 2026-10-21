@@ -1,5 +1,26 @@
-const UserCard = ({user}) => {
-    const {firstName, lastName, about, age, gender, photoUrl} = user;
+import axios from "axios";
+import { BASE_URL } from "../utils/constants";
+import { useDispatch } from "react-redux";
+import { filterFeed } from "../store/feedSlice";
+
+const UserCard = ({ user, isEnableRequestSendBtn = false, emitToastMessage }) => {
+    const { _id, firstName, lastName, about, age, gender, photoUrl } = user;
+    const dispatch = useDispatch();
+
+    const handleSendRequest = async (status: string, userId: string) => {
+        try {
+            const reqResponse = await axios.post(BASE_URL + `/request/send/${status}/${userId}`,
+                {},
+                { withCredentials: true });
+            if (reqResponse.status === 200) {
+                dispatch(filterFeed(userId));
+                emitToastMessage?.(reqResponse?.data?.message);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     return (
         <>
             <div className="card bg-base-300 w-80 shadow-sm">
@@ -10,13 +31,13 @@ const UserCard = ({user}) => {
                         alt="Profile Pic" />
                 </figure>
                 <div className="card-body items-center text-center">
-                    <h2 className="card-title">{ firstName +" "+lastName }</h2>
-                    <h4 className="card-title">{ about }</h4>
-                    { age && gender && (<p>{age + " ," + gender}</p>)}
-                    <div className="card-actions justify-end">
-                        <button className="btn btn-secondary">Ignore</button>
-                        <button className="btn btn-primary">Interested</button>
-                    </div>
+                    <h2 className="card-title">{firstName + " " + lastName}</h2>
+                    <h4 className="card-title">{about}</h4>
+                    {age && gender && (<p>{age + " ," + gender}</p>)}
+                    {isEnableRequestSendBtn && (<div className="card-actions justify-end">
+                        <button className="btn btn-secondary" onClick={() => handleSendRequest("ignored", _id)}>Ignore</button>
+                        <button className="btn btn-primary" onClick={() => handleSendRequest("interested", _id)}>Interested</button>
+                    </div>)}
                 </div>
             </div>
         </>

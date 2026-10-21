@@ -9,6 +9,7 @@ const Feed = () => {
     const dispatch = useDispatch();
     const usersFeed = useSelector(store => store.feed);
     const [error, setError] = useState("");
+    const [toast, setToast] = useState("");
     const getFeed = async () => {
         try {
             const res = await axios.get(BASE_URL + "/user/feed", { withCredentials: true });
@@ -18,6 +19,13 @@ const Feed = () => {
         } catch (error) {
             setError(error?.response?.data);
         }
+    };
+    
+    const handleShowToast = (msg: string) => {
+        setToast(msg);
+        setTimeout(() => {
+            setToast("");
+        }, 3000);
     }
 
     useEffect(() => {
@@ -28,7 +36,12 @@ const Feed = () => {
         <div className="flex flex-col items-center my-5 gap-10">
             {usersFeed?.length > 0 ? (
                 usersFeed.map((data) => (
-                    <UserCard key={data._id} user={data} />
+                    <UserCard
+                        key={data._id}
+                        user={data}
+                        isEnableRequestSendBtn={true}
+                        emitToastMessage={handleShowToast}
+                    />
                 ))
             ) : (
                 <div className="inline-grid *:[grid-area:1/1]">
@@ -38,6 +51,11 @@ const Feed = () => {
                     <p>{error}</p>
                 </div>
             )}
+            {toast && <div className="toast toast-top toast-center">
+                <div className="alert alert-success">
+                    <span>{toast}</span>
+                </div>
+            </div>}
         </div>
     );
 }

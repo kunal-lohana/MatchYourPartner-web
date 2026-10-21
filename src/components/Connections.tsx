@@ -9,7 +9,6 @@ const Connections = () => {
     const connections = useSelector(store => store.connections);
     const [error, setError] = useState("");
     const getConnections = async () => {
-        if(connections) return;
         try {
             const res = await axios.get(BASE_URL + "/user/connections", { withCredentials: true });
             if (res.status === 200) {
@@ -18,7 +17,6 @@ const Connections = () => {
         } catch (error) {
             setError(error?.response?.data);
         }
-
     }
     useEffect(() => {
         getConnections();

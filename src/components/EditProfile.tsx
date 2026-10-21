@@ -66,11 +66,14 @@ const EditProfile = ({ user }) => {
                 </fieldset>
             </div>
             <div className="my-4">
-                <UserCard user={{ firstName, lastName, age, gender, about, photoUrl }}></UserCard>
+                <UserCard
+                    user={{ firstName, lastName, age, gender, about, photoUrl }}
+                    isEnableRequestSendBtn={false}
+                ></UserCard>
             </div>
             {toast && <div className="toast toast-top toast-center">
                 <div className="alert alert-success">
-                    <span>Message sent successfully.</span>
+                    <span>{toast}</span>
                 </div>
             </div>}
         </div>
