@@ -9,7 +9,6 @@ const Requests = () => {
     const [error, setError] = useState("");
 
     const getRequests = async () => {
-        if (requests?.length) return;
         try {
             const res = await axios.get(BASE_URL + "/user/receivers", { withCredentials: true });
             if (res.status === 200) {
@@ -44,18 +43,20 @@ const Requests = () => {
     if (!requests) return;
     if (requests?.length === 0) return (<h2 className="text-center text-shadow-warning text-2xl py-5">No requests exists!!</h2>)
 
-    return (<div className="flex flex-col items-center gap-5 max-w-md my-5 text-center mx-auto">
+    return (<div className="flex flex-col items-center gap-5 my-5 text-center mx-auto w-full">
         {requests.map((request) => {
             const { _id, firstName, lastName, photoUrl, age, gender, about } = request?.fromUserId;
             return (
-                <div key={_id} className="flex justify-center bg-base-300 gap-10 p-2 shadow-sm items-center">
+                <div 
+                    key={_id} 
+                    className="w-full max-w-5xl flex items-center bg-base-300 gap-10 p-2 shadow-sm">
                     <img alt="photo" src={photoUrl} className="w-20 h-20 rounded-full"></img>
-                    <div className="flex flex-col gap-2">
+                    <div className="text-left mx-4">
                         <h3 className="text-xl font-bold">{firstName + " " + lastName}</h3>
                         <p className="flex-nowrap">{about}</p>
                         {age && gender && <p>{age + " ," + gender}</p>}
                     </div>
-                    <div className="flex gap-5">
+                    <div className="flex justify-end-self gap-5">
                         <button className="btn btn-primary" onClick={() => handleRequest('rejected', request?._id)}>Reject</button>
                         <button className="btn btn-secondary" onClick={() => handleRequest('accepted', request?._id)}>Accept</button>
                     </div>

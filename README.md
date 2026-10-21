@@ -26,3 +26,5 @@
 - Create page to show all requests for connection
 - Implement api request of request-accepted/rejected
 - Implement send/request - interested/ignored
+- Signup New User
+- Testing e2e

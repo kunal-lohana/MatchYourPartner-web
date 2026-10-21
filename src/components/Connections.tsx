@@ -24,13 +24,13 @@ const Connections = () => {
     if (!connections) return;
     if (connections?.length === 0) return (<h2 className="text-center text-shadow-warning text-2xl py-5">No Connections exists!!</h2>)
 
-    return (<div className="flex flex-col items-center gap-5 max-w-2/3 my-5 text-center mx-auto">
+    return (<div className="flex flex-col items-center gap-5 w-full max-w-5xl my-5 text-center mx-auto h-auto overflow-auto">
         {connections.map((connection) => {
             const { _id, firstName, lastName, photoUrl, age, gender, about } = connection;
             return (
-                <div key={_id} className="flex justify-center bg-base-300 gap-10 p-2 shadow-sm items-center">
+                <div key={_id} className="w-full flex justify-start bg-base-300 gap-10 p-2 shadow-sm items-center">
                     <img alt="photo" src={photoUrl} className="w-20 h-20 rounded-full"></img>
-                    <div className="flex flex-col gap-2">
+                    <div className="flex flex-col text-left gap-2">
                         <h3 className="text-xl font-bold">{firstName + " " + lastName}</h3>
                         <p className="flex-nowrap">{about}</p>
                         {age && gender && <p>{age + " ," + gender}</p>}

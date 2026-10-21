@@ -8,7 +8,7 @@ import { addUser } from "../store/userSlice";
 const EditProfile = ({ user }) => {
     const [firstName, setFirstName] = useState(user.firstName);
     const [lastName, setLastName] = useState(user.lastName);
-    const [age, setAge] = useState(user.age || 1);
+    const [age, setAge] = useState(user.age || "");
     const [gender, setGender] = useState(user.gender || "male");
     const [about, setAbout] = useState(user.about);
     const [photoUrl, setPhotoUrl] = useState(user.photoUrl);
@@ -53,7 +53,7 @@ const EditProfile = ({ user }) => {
                     <input type="text" className="input" placeholder="Photo Url" value={photoUrl} onChange={(e) => setPhotoUrl(e.target.value)} />
 
                     <label className="label">Age</label>
-                    <input type="number" className="input" placeholder="Age" value={age} onChange={(e) => setAge(e.target.value)} />
+                    <input type="text" className="input" placeholder="Age" value={age} onChange={(e) => setAge(e.target.value)} />
 
                     <div className="flex gap-x-3"><label className="label">Male</label>
                         <input type="radio" name="radio-1" className="radio" defaultChecked={gender === 'male'} value="male" onChange={(e) => setGender(e.target.value)} />
