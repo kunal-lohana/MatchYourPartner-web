@@ -1,11 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
+import type { ConnectionsType } from "../modals/common";
 
+const initialState: ConnectionsType = [];
 const connectionSlice = createSlice({
     name: 'connections',
-    initialState: null,
+    initialState,
     reducers: {
-        addConnections: (state, action) => action.payload,
-        removeConnections: (state) => null 
+        addConnections: (_state, action) => action.payload,
+        removeConnections: (_state) => [] 
     }
 })
 

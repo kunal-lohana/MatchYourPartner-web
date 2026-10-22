@@ -1,16 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
+import type { FeedsType } from "../modals/common";
 
+
+const initialState: FeedsType = [];
 const feedSlice = createSlice({
     name: 'feed',
-    initialState: null,
+    initialState,
     reducers: {
-         addFeed(state, action) {
+         addFeed(_state, action) {
             return action.payload
         },
         filterFeed(state, action) {
-            return state.filter((feed) => feed._id != action.payload)
+            return state?.filter((feed) => feed._id != action.payload)
         },
-        removeFeed: (state) => null,
+        removeFeed: (_state) => [],
     }
 })
 

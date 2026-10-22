@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { BASE_URL } from "../utils/constants";
 import axios from "axios";
 import { addConnections } from "../store/connectionSlice";
+import { useAppSelector, useAppDispatch } from "../store/hooks";
 
 const Connections = () => {
-    const dispatch = useDispatch();
-    const connections = useSelector(store => store.connections);
-    const [error, setError] = useState("");
+    const dispatch = useAppDispatch();
+    const connections = useAppSelector(
+    (state) => state.connections
+  );
+    const [_error, setError] = useState("");
     const getConnections = async () => {
         try {
             const res = await axios.get(BASE_URL + "/user/connections", { withCredentials: true });
@@ -15,14 +17,21 @@ const Connections = () => {
                 dispatch(addConnections(res.data.data));
             }
         } catch (error) {
-            setError(error?.response?.data);
+            if (axios.isAxiosError(error)) {
+                if (error?.response?.data) {
+                    setError(error?.response?.data);
+                }
+            } else {
+                console.error("Unexpected error:", error);
+            }
         }
     }
     useEffect(() => {
         getConnections();
     }, []);
-    if (!connections) return;
-    if (connections?.length === 0) return (<h2 className="text-center text-shadow-warning text-2xl py-5">No Connections exists!!</h2>)
+    if (!connections || connections.length === 0) {
+        return (<h2 className="text-center text-shadow-warning text-2xl py-5">No Connections exists!!</h2>)
+    }
 
     return (<div className="flex flex-col items-center gap-5 w-full max-w-5xl my-5 text-center mx-auto h-auto overflow-auto">
         {connections.map((connection) => {

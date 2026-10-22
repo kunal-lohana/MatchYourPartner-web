@@ -6,11 +6,12 @@ import { BASE_URL } from "../utils/constants";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../store/userSlice";
+import type { RootState } from "../store/appStore";
 
 const Body = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const userData = useSelector(store => store.user);
+    const userData = useSelector((store: RootState) => store.user);
     const fetchUser = async () => {
         if (!userData) {
             try {
@@ -21,8 +22,12 @@ const Body = () => {
                     dispatch(addUser(res.data.data));
                 }
             } catch (error) {
-                if (error?.status === 401) {
-                    navigate("/login");
+                if (axios.isAxiosError(error)) {
+                    if (error?.status === 401) {
+                        return navigate("/login");
+                    }
+                } else {
+                    console.error("Unexpected error:", error);
                 }
             }
         }

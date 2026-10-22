@@ -1,5 +1,5 @@
 # MatchYourPartner
-- Create application setup using Vite + React
+- Create application setup using Vite + React + TypeScript
 - Remove unnecessary code
 - Install Tailwind Css
 - Install Daisy UI

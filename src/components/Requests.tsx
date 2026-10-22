@@ -3,24 +3,31 @@ import { useDispatch, useSelector } from "react-redux";
 import { BASE_URL } from "../utils/constants";
 import axios from "axios";
 import { addRequests, removeRequests } from "../store/requestSlice";
+import type { RootState } from "../store/appStore";
+
 const Requests = () => {
     const dispatch = useDispatch();
-    const requests = useSelector(store => store.requests);
-    const [error, setError] = useState("");
+    const requests = useSelector((store: RootState) => store.requests);
+    const [_error, setError] = useState("");
 
     const getRequests = async () => {
         try {
             const res = await axios.get(BASE_URL + "/user/receivers", { withCredentials: true });
             if (res.status === 200) {
-                console.log('res', res.data.data);
                 dispatch(addRequests(res.data.data));
             }
         } catch (error) {
-            setError(error?.response?.data);
+            if (axios.isAxiosError(error)) {
+                if (error?.response?.data) {
+                    setError(error.response?.data || 'something went wrong!!');
+                }
+            } else {
+                console.error("Unexpected error:", error);
+            }
         }
     }
 
-    const handleRequest = async (status: string, _id: string) => {
+    const handleRequest = async (status: string, _id: string| undefined) => {
         try {
             const requestId = _id;
             if (requestId) {

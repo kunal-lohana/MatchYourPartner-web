@@ -28,7 +28,13 @@ const Login = () => {
                 navigate('/');
             }
         } catch (error: any) {
-            setError(error?.response?.data || 'Something went wrong!!');
+             if (axios.isAxiosError(error)) {
+                if (error?.response?.data) {
+                    setError(error.response?.data || 'something went wrong!!');
+                }
+            } else {
+                console.error("Unexpected error:", error);
+            }
         }
     }
 
@@ -45,7 +51,13 @@ const Login = () => {
                 navigate("/profile");
             }
         } catch (error) {
-           setError(error?.response?.data || 'Something went wrong!!');
+            if (axios.isAxiosError(error)) {
+                if (error?.response?.data) {
+                    setError(error?.response?.data || 'something went wrong!!');
+                }
+            } else {
+                console.error("Unexpected error:", error);
+            }
         }
     }
 

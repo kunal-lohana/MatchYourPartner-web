@@ -2,12 +2,22 @@ import axios from "axios";
 import { BASE_URL } from "../utils/constants";
 import { useDispatch } from "react-redux";
 import { filterFeed } from "../store/feedSlice";
+import type { User } from "../modals/common";
 
-const UserCard = ({ user, isEnableRequestSendBtn = false, emitToastMessage }) => {
-    const { _id, firstName, lastName, about, age, gender, photoUrl } = user;
+interface UserCardProps {
+    user: Partial<User>;
+    isEnableRequestSendBtn?: boolean;
+    emitToastMessage?: (message: string) => void;
+}
+const UserCard = ({
+    user,
+    isEnableRequestSendBtn = false,
+    emitToastMessage,
+}: UserCardProps) => {
+    const { _id: id, firstName, lastName, about, age, gender, photoUrl } = user;
     const dispatch = useDispatch();
 
-    const handleSendRequest = async (status: string, userId: string) => {
+    const handleSendRequest = async (status: string, userId: string | undefined) => {
         try {
             const reqResponse = await axios.post(BASE_URL + `/request/send/${status}/${userId}`,
                 {},
@@ -34,10 +44,12 @@ const UserCard = ({ user, isEnableRequestSendBtn = false, emitToastMessage }) =>
                     <h2 className="card-title">{firstName + " " + lastName}</h2>
                     <h4 className="card-title">{about}</h4>
                     {age && gender && (<p>{age + " ," + gender}</p>)}
-                    {isEnableRequestSendBtn && (<div className="card-actions justify-end">
-                        <button className="btn btn-secondary" onClick={() => handleSendRequest("ignored", _id)}>Ignore</button>
-                        <button className="btn btn-primary" onClick={() => handleSendRequest("interested", _id)}>Interested</button>
-                    </div>)}
+                    {isEnableRequestSendBtn && (
+                        <div className="card-actions justify-end">
+                            <button className="btn btn-secondary" onClick={() => handleSendRequest("ignored", id)}>Ignore</button>
+                            <button className="btn btn-primary" onClick={() => handleSendRequest("interested", id)}>Interested</button>
+                        </div>
+                    )}
                 </div>
             </div>
         </>

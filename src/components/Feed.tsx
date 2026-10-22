@@ -4,10 +4,11 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { addFeed } from "../store/feedSlice";
 import UserCard from "./UserCard";
+import type { RootState } from "../store/appStore";
 
 const Feed = () => {
     const dispatch = useDispatch();
-    const usersFeed = useSelector(store => store.feed);
+    const usersFeed = useSelector((store: RootState) => store.feed);
     const [error, setError] = useState("");
     const [toast, setToast] = useState("");
     const getFeed = async () => {
@@ -17,7 +18,13 @@ const Feed = () => {
                 dispatch(addFeed(res.data.data));
             }
         } catch (error) {
-            setError(error?.response?.data);
+            if (axios.isAxiosError(error)) {
+                if (error?.response?.data) {
+                    setError(error?.response?.data || 'something went wrong!!');
+                }
+            } else {
+                console.error("Unexpected error:", error);
+            }
         }
     };
     

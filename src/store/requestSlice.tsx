@@ -1,15 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
+import type { RequestsType } from "../modals/common";
 
+const initialState: RequestsType = [];
 const requestsSlice = createSlice({
     name: 'requests',
-    initialState: null,
+    initialState,
     reducers: {
-        addRequests: (state, action) => action.payload,
+        addRequests: (_state, action) => action.payload,
         removeRequests: (state, action) => {
             const filterData = state.filter((request) => request._id != action.payload);
             return filterData;
         },
-        deleteRequest: (state) => null,
+        deleteRequest: (_state) => [],
     }
 })
 

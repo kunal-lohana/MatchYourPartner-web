@@ -4,8 +4,13 @@ import axios from "axios";
 import { BASE_URL } from "../utils/constants";
 import { useDispatch } from "react-redux";
 import { addUser } from "../store/userSlice";
+import type {User} from "../modals/common";
 
-const EditProfile = ({ user }) => {
+interface EditProfileProps {
+  user: Partial<User>;
+}
+
+const EditProfile = ({ user}: EditProfileProps ) => {
     const [firstName, setFirstName] = useState(user.firstName);
     const [lastName, setLastName] = useState(user.lastName);
     const [age, setAge] = useState(user.age || "");
@@ -34,7 +39,13 @@ const EditProfile = ({ user }) => {
                 }, 3000);
             }
         } catch (error) {
-            setError(error.response?.data?.message || 'something went wrong!!');
+            if (axios.isAxiosError(error)) {
+                if (error?.response?.data?.message) {
+                    setError(error.response?.data?.message || 'something went wrong!!');
+                }
+            } else {
+                console.error("Unexpected error:", error);
+            }
         }
     }
     return (
