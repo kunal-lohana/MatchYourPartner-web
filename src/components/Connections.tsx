@@ -9,11 +9,15 @@ const Connections = () => {
     const connections = useAppSelector(
     (state) => state.connections
   );
-    const [_error, setError] = useState("");
+    const [error, setError] = useState("");
     const getConnections = async () => {
+        setError('Loading...');
         try {
             const res = await axios.get(BASE_URL + "/user/connections", { withCredentials: true });
             if (res.status === 200) {
+                if(res?.data?.data?.length === 0 ) {
+                    setError('No Connections exists...');
+                }
                 dispatch(addConnections(res.data.data));
             }
         } catch (error) {
@@ -30,7 +34,7 @@ const Connections = () => {
         getConnections();
     }, []);
     if (!connections || connections.length === 0) {
-        return (<h2 className="text-center text-shadow-warning text-2xl py-5">No Connections exists!!</h2>)
+        return (<h2 className="text-center text-shadow-warning text-2xl py-5">{error}</h2>)
     }
 
     return (<div className="flex flex-col items-center gap-5 w-full max-w-5xl my-5 text-center mx-auto h-auto overflow-auto">

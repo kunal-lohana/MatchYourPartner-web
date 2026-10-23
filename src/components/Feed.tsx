@@ -12,9 +12,13 @@ const Feed = () => {
     const [error, setError] = useState("");
     const [toast, setToast] = useState("");
     const getFeed = async () => {
+        setError('Loading...');
         try {
             const res = await axios.get(BASE_URL + "/user/feed", { withCredentials: true });
             if (res.status === 200) {
+                if(res?.data?.data?.length === 0 ) {
+                    setError('No Feeds exists...');
+                }
                 dispatch(addFeed(res.data.data));
             }
         } catch (error) {
@@ -51,13 +55,9 @@ const Feed = () => {
                     />
                 ))
             ) : (
-                <>
-                <div className="inline-grid *:[grid-area:1/1]">
-                    <div className="status status-error animate-ping"></div>
-                    <div className="status status-error"></div>
+                <div className="flex gap-2 justify-center">
+                    <p className="text-2xl text-shadow-error">{error}</p>
                 </div>
-                    <h3 className="text-2xl text-shadow-error">{error || 'No more users avaiable!!'}</h3>
-                </>
             )}
             {toast && <div className="toast toast-top toast-center">
                 <div className="alert alert-success">
