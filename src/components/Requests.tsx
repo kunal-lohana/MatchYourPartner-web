@@ -15,7 +15,7 @@ const Requests = () => {
         try {
             const res = await axios.get(BASE_URL + "/user/receivers", { withCredentials: true });
             if (res.status === 200) {
-                if(res?.data?.data?.length === 0 ) {
+                if (res?.data?.data?.length === 0) {
                     setError('No Request exists...');
                 }
                 dispatch(addRequests(res.data.data));
@@ -31,7 +31,7 @@ const Requests = () => {
         }
     }
 
-    const handleRequest = async (status: string, _id: string| undefined) => {
+    const handleRequest = async (status: string, _id: string | undefined) => {
         try {
             const requestId = _id;
             if (requestId) {
@@ -54,20 +54,29 @@ const Requests = () => {
     if (!requests) return;
     if (requests?.length === 0) return (<h2 className="text-center text-shadow-warning text-2xl py-5">{error}</h2>)
 
-    return (<div className="flex flex-col items-center gap-5 my-5 text-center mx-auto w-full">
+    return (<div className="flex flex-col items-center gap-5 my-5 text-center mx-auto px-2 w-full">
         {requests.map((request) => {
             const { _id, firstName, lastName, photoUrl, age, gender, about } = request?.fromUserId;
             return (
-                <div 
-                    key={_id} 
-                    className="w-full max-w-5xl flex items-center bg-base-300 gap-10 p-2 shadow-sm">
+                <div
+                    key={_id}
+                    className="flex flex-col sm:flex-row items-center bg-base-300 gap-4 sm:gap-10 p-4 shadow-sm w-full max-w-5xl"
+                >
                     <img alt="photo" src={photoUrl} className="w-20 h-20 rounded-full"></img>
-                    <div className="text-left mx-4">
-                        <h3 className="text-xl font-bold">{firstName + " " + lastName}</h3>
-                        <p className="flex-nowrap">{about}</p>
-                        {age && gender && <p>{age + " ," + gender}</p>}
+                    <div className="text-left mx-2 sm:mx-4 min-w-0 flex-1 w-full">
+                        <h3 className="text-xl font-bold wrap-break-word">
+                            {firstName + " " + lastName}
+                        </h3>
+
+                        <p className="wrap-break-word overflow-wrap-anywhere">
+                            {about}
+                        </p>
+
+                        {age && gender && (
+                            <p>{age + " ," + gender}</p>
+                        )}
                     </div>
-                    <div className="flex justify-end-self gap-5">
+                    <div className="flex justify-center sm:justify-end gap-3 sm:gap-5 shrink-0 w-full sm:w-auto">
                         <button className="btn btn-primary" onClick={() => handleRequest('rejected', request?._id)}>Reject</button>
                         <button className="btn btn-secondary" onClick={() => handleRequest('accepted', request?._id)}>Accept</button>
                     </div>
